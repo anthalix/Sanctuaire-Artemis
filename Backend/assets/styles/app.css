@@ -1,0 +1,32 @@
+body {
+    background-color: rgb(187, 187, 187);
+    background-size: cover;
+}
+.bg-color-blue {
+    background-color:rgb(83, 83, 83) !important;
+}
+.nav-linkactive {
+    background-color:rgb(158, 160, 160) !important;
+    border-radius: 5px;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    
+
+    color: white ;
+    text-decoration: none;
+
+}
+.navbar-brand {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.nav-link {
+    color: white ;
+    text-decoration: none;
+    
+}
+#navbarNav {
+    padding-top: 0.2rem;
+
+}

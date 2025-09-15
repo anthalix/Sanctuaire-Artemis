@@ -1,0 +1,191 @@
+header {
+    background-color: rgb(175, 161, 161);
+    width: 100%;
+    height: 25vh;
+    align-items: center;
+
+}
+#main-nav {
+    width: 100%;
+    height: 20vh;
+    display: flex;
+   }
+.logo {
+    width: 10vw;
+    height: 20vh;
+    margin-left: 20px;
+    margin-top: 20px;
+   }
+#navbar-nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 60vw;
+    margin: auto;
+  }
+.navbar-ul {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    margin-top: 5vh;
+  }
+
+footer {
+    margin-top: 70px;
+    width: 100%;
+    height: 350px;
+    display: flex;
+    justify-content: space-around;
+    font-family: 'bebas+neue';
+    padding-left: 0;
+    background-color: rgb(175, 161, 161);
+    height: min-content;
+
+}
+.coordonnées {
+    width: 70%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 2%;
+    height: fit-content;
+}
+p {
+    border: 1px solid white;
+    background-color: rgb(90, 88, 88);
+    color: white;
+    padding: 5px 10px;
+    width: 25%;
+    border-radius: 10px;
+
+}
+ul {
+    list-style: none;
+    margin-top: 10px;
+}
+.navbar-link a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.7rem;
+}
+.navbar-link a:hover {
+    color: white;
+    border: 2px solid white;
+    background-color: rgb(90, 88, 88) !important;
+    padding: 5px 10px;
+    border-radius: 10px;
+}
+.cta {
+    transition: all 0.8s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    padding-top: 10px;
+    padding-bottom: 0;
+    text-align: center;
+    height: 290px;
+    width: 20%;
+    margin-right: 5%;
+    z-index: 5;
+    background-color: rgb(90, 88, 88) !important;
+    color: white;
+
+    border: 2px solid white;
+    padding-bottom: 10px;
+
+
+}
+.cta-title {
+    border-radius: 25px 25px 0 0;
+    color: white;
+    font-size: 1.5rem;
+
+}
+.cta:hover {
+    transform-origin: bottom;
+
+    transform: scale(1.5);
+}
+.list-hours {
+    display: flex;
+    flex-direction: column;
+    font-size: 1rem;
+    list-style-type: none;
+    text-decoration: none;
+    text-align: start;
+    font-weight: 3rem;
+    justify-content: space-between;
+    padding:  10px 10px;
+    column-gap: 10px;
+    margin: 0;
+    height: 100%;
+
+}
+.list-hours .list-hours-item {
+    display: flex;
+
+    text-decoration: none;
+    text-align: start;
+    font-weight: 3rem;
+    justify-content: space-between;
+   
+
+}
+.list-hours .list-hours-item-day {
+    display: flex;
+
+    text-decoration: none;
+    text-align: start;
+    font-weight: 3rem;
+    justify-content: space-between;
+  
+    color: rgb(23, 236, 94);
+
+
+
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-content: space-around;
+  gap: 30px;
+  width: 100%;
+  align-items: center;
+} 
+.polaroid-images-home{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.polaroid-images-home img {
+    
+    border: 2px solid grey;
+    width: 400px;
+    height: 400px;
+
+  border-radius: 50%;
+}
+.presentation p {
+  width: 100%;
+  height: max-content;
+  padding: 20px 20px;
+}
+.p_ul{
+    border: 1px solid white;
+    background-color: rgb(90, 88, 88);
+    color: white;
+    padding: 5px 10px;
+    width: 25%;
+    border-radius: 10px;
+
+  width: 100%;
+  height: max-content;
+  padding: 20px 20px;
+
+}
+ 

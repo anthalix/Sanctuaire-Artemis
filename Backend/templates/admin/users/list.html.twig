@@ -1,0 +1,53 @@
+{% extends 'admin/admin.html.twig' %}
+{% block title %}Tous les Clients!
+{% endblock %}
+
+{% block body %}
+
+
+    <h1>Tous les Contacts</h1>
+
+
+    <div class="container">
+
+
+          <div class="list-group">
+             {% for user in users %}
+                 <div class="list-group-item">
+                     <p> nom : {{user.username}}</p>
+                     <p> email : {{user.email}}</p>
+                     <p> tel : {{user.tel}}</p>
+                     <p> adresse : {{user.adresse}}</p>
+
+
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <style>
+     .list-group-item{
+         width:200px ;
+         height: max-content;
+         background-color:lightslategrey;
+         color: whitesmoke;
+         border: 1px solid lightslategrey;
+         margin: 25px;
+
+     }
+     .list-group{
+         display: flex;
+         flex-direction: row;
+     }
+
+     h1{
+         width: 100%;
+     }
+     p{
+         background-color: darkslategrey;
+         padding-left: 10px;
+     }
+
+
+    </style>
+
+{% endblock %}

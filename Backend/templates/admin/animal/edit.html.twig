@@ -1,0 +1,26 @@
+{% extends 'admin/admin.html.twig' %}
+
+
+{% block title %}Modifier Animal{% endblock %}
+
+{% block body %}
+<style>
+img{
+    width: 150px;
+    height: 150px;
+}
+</style>
+
+    <h3>Modifier : {{animal.name |upper}}</h3>
+	<img src=" {{ vich_uploader_asset(animal, 
+    'thumbnailFile') }}" alt="{{animal.name}}" class="img-fluid" style="width: 20%; height: auto;"/>
+
+
+    {{form(form)}}
+
+
+
+
+
+
+{% endblock %}
