@@ -1,7 +1,7 @@
 <div class="container">
-	<h1 class="title_home">Refuge pour Chiens et Chats</h1>
+	<h1 class="title_home">O'Refuge</h1>
 
-	<h2>Je souhaite adopter un</h2>
+	<h2>Je souhaite adopter un :</h2>
 	<div class="polaroid-images-home">
 		<div>
 			<a href="/Dog" title="CHIENS ">

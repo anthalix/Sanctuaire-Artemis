@@ -6,10 +6,12 @@
 
 	onMount(() => {
 		const myCarouselElement = document.querySelector('#carouselExample');
-		const carousel = new window.bootstrap.Carousel(myCarouselElement, {
-			interval: 5000,
-			touch: false
-		});
+		if (myCarouselElement) {
+			const carousel = new window.bootstrap.Carousel(myCarouselElement, {
+				interval: 3000,
+				touch: false
+			});
+		}
 	});
 </script>
 
@@ -60,14 +62,14 @@
 	</div>
 
 	<div class="single-presentation">
-		<h2>A propos de {animal.name} :</h2>
+	
 
-		<p>
-			{@html animal.description} <br /><br />
-
+		<p class="description">{@html animal.description} </p>
+			<br /><br />
+        <p>
 			Il est agé de {animal.age} ans,
 			{#each animal.breeds as breed}
-				C'est un {breed.name} !
+				C'est un : <span class="breed">  {breed.name} !</span>
 			{/each} <br />
 			<br />
 
@@ -101,34 +103,80 @@
 </main>
 
 <style>
-	h1 {
-		width: min-content;
-		height: min-content;
-		margin: auto;
-		margin-top: 25px;
-	}
-	p {
-		text-align: justify;
-		width: 95%;
-		height: min-content;
-		font-size: x-large;
-		padding-top: 25px;
-		padding-left: 15px;
-		margin-top: 65px;
-		margin-right: 25px;
-	}
-	h2 {
-		background-color: rgb(32, 69, 90);
-		border: 1px solid white;
-		border-radius: 10px;
 
-		margin-top: 20px;
-		color: white;
-		padding: 7px 15px;
-		width: max-content;
+	.single {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		gap: 50px;
+		margin: 50px;
+		flex-wrap: wrap;
 	}
+	.single-img {
+		width: 500px;
+		height: 500px;
+		border: 2px solid #0f1851;
+		border-radius: 8px;
+		overflow: hidden;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	}
+	.single-img img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+	.single-presentation {
+		width: 500px;
+		height: max-content;
+		border: 2px solid #0f1851;
+		border-radius: 8px;
+		overflow: auto;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		padding: 15px;
+	}
+	h1 {
+		font-size: 3rem;
+	color: rgb(34, 71, 113);
+	text-shadow: 2px 2px 4px rgba(12, 29, 76, 0.5);
+	margin-bottom: 20px;
+	margin-top: 20px;
+	font-family: 'bebas+neue', sans-serif;
+	text-align: center;
+	border-radius: 5px;
+    
+
+
+	padding: 20px 40px;
+	}
+	p{
+		font-size: 1.1rem;
+		line-height: 1.6;
+		width: 100%;
+		height: max-content;
+		position: relative;
+		padding-top: 20px;
+	}
+
 	img {
 		width: 40px;
 	}
+	.description {
+		font-weight: bold;
+		font-size: 1.2rem;
+		height:150px;
+		
+	}
+	.breed{
+		position: absolute;
+		font-weight: bold;
+		color: rgb(10, 35, 64);
+		font-size: 2rem;
+		right: 60px;
+		top: 6px;
+
+	
+		font-family: 'bebas+neue', sans-serif;}
+		
 
 </style>

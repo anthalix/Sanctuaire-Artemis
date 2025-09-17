@@ -70,7 +70,7 @@
             <input type="tel" value={user?.tel}  class="border p-2 rounded" />
             </div>
 
-            <input type="text" value={user?.adresse}  class="border p-2 rounded" />
+            <input id="adresse"     type="text" value={user?.adresse}  class="border p-2 rounded" />
             <textarea bind:value={message} placeholder="Votre message" rows="5" class="border p-2 rounded w-full">
             </textarea>
 
@@ -83,6 +83,21 @@
     </div>
 </div>
 <style>
+    form{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    }
+    #adresse{
+        width: 100%;
+    }
+    textarea{
+        width: 100%;
+        padding-left:15px;
+        font-size: 0.8rem;
+    }
 
  .form{
      display: flex;
@@ -104,6 +119,36 @@
      color: red;
      background-color: rgb(248, 99, 99);
      margin-top: 2rem;
+ }
+ h2{
+     margin-bottom: 1rem;
+     color: white;
+ }
+
+ .container_register {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     margin-bottom: -70px;
+     height: 100%;
+     width: 100%;
+    background-color: rgb(34, 71, 113);
+ }
+ .select_register {
+	background-color: rgb(61, 93, 132);
+   margin:30px ;
+     padding: 2rem;
+     border-radius: 10px;
+     box-shadow: 0 6px 10px white;
+     width: min-content;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     gap: 1rem;
+ }
+ button{
+     width: 50%;
+     font-size: 0.8rem;
  }
 
 
