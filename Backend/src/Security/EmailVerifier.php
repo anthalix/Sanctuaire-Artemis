@@ -45,13 +45,16 @@ class EmailVerifier
      */
     public function handleEmailConfirmation(Request $request, User|FrontUser $user): void
     {
-        $this->verifyEmailHelper->validateEmailConfirmationFromRequest($request, (string) $user->getId(), (string) $user->getEmail());
+        $this->verifyEmailHelper->validateEmailConfirmationFromRequest(
+            $request, 
+            (string) $user->getId(),
+            (string) $user->getEmail());
 
         if (method_exists($user, 'setIsVerified')) {
             $user->setIsVerified(true);
         };
 
-        $this->entityManager->persist($user);
+  
         $this->entityManager->flush();
     }
 }

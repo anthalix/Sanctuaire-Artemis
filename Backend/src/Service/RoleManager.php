@@ -13,20 +13,29 @@ class RoleManager
     {
     }
 
-    public function assignRolesOnVerification(User|FrontUser $user): void
-    {
-        $roles = $user->getRoles();
+  public function assignRolesOnVerification(User|FrontUser $user): void
+{
+    // Récupère les rôles existants, ou tableau vide
+    $roles = $user->getRoles() ?? [];
 
-        if (method_exists($user, 'isVerified') && $user->isVerified()) {
-            $roles[] = $user instanceof FrontUser ? 'ROLE_FRONT' : 'ROLE_USER';
+    // Vérifie que l'utilisateur est bien vérifié
+    if (method_exists($user, 'isVerified') && $user->isVerified()) {
 
-            // Ajout ROLE_ADMIN pour antho@io.fr
-            if ($user->getEmail() === 'antho@io.fr') {
-                $roles[] = 'ROLE_ADMIN';
-            }
-
-            $user->setRoles(array_unique($roles));
-            $this->entityManager->flush();
+        // Assigne le rôle correspondant selon le type d'utilisateur
+        if ($user instanceof FrontUser && !in_array('ROLE_FRONT', $roles)) {
+            $roles[] = 'ROLE_FRONT';
+        } elseif ($user instanceof User && !in_array('ROLE_USER', $roles)) {
+            $roles[] = 'ROLE_USER';
         }
+
+        // Cas spécial : ROLE_ADMIN pour antho@io.fr
+        if ($user->getEmail() === 'antho@io.fr' && !in_array('ROLE_ADMIN', $roles)) {
+            $roles[] = 'ROLE_ADMIN';
+        }
+
+        // Supprime les doublons et met à jour
+        $user->setRoles(array_unique($roles));
     }
+}
+
 }

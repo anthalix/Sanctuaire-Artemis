@@ -26,8 +26,7 @@ header {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-around;
-	width: 60vw;
-	margin: auto;
+	width: 80vw;
 }
 .navbar-ul {
 	width: 100%;
@@ -199,7 +198,7 @@ ul {
 	padding: 20px 40px;
 }
 h2 {
-	color: rgb(34, 71, 113);
+	color: rgb(22, 50, 82);
 	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 	font-family: 'bebas+neue', sans-serif;
 	text-align: center;

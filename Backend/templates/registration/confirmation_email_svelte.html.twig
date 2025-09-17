@@ -1,18 +1,12 @@
 
-
 <p>
-    Merci de vous être inscrit !<br><br>
+    Merci de vous être inscrit, {{ FrontUser.username }} !<br><br>
     Veuillez confirmer votre adresse e-mail en cliquant sur le lien suivant :
 </p>
 
-
-
-
-<a href="http://localhost:5173/verify-email?url={{ signedUrl | url_encode }}">
-	Confirmer votre email
-</a>
-
-
+<
+ <a href="{{ signedUrl }}">
+    Confirmer votre email
 
 
 <p>
