@@ -75,7 +75,10 @@
 		{#if filteredDogs.length > 0}
 			{#each filteredDogs as dog}
 				<div class="col-md-2 mb-2">
-					<div class="card">
+					<div class="card position-relative">
+						{#if dog.status === 'urgent'}
+							<div class="ribbon">URGENT</div>
+						{/if}
 						<a href="animal/{dog.id}" title="CHIENS ">
 							<img
 								src={`http://localhost:8000/animals/images/${dog.thumbnail}`}
@@ -100,6 +103,22 @@
 		margin-bottom: 20px;
 		display: flex;
 		flex-direction: row;
+	}
+	.ribbon {
+		width: 120px;
+		height: 30px;
+		background: red;
+		color: white;
+		font-weight: bold;
+		text-align: center;
+		line-height: 30px;
+		border-radius: 10px;
+		position: absolute;
+		top: 10px;
+		right: -30px;
+		transform: rotate(45deg);
+		z-index: 10;
+		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 	}
 	.select {
 		background-color: steelblue;

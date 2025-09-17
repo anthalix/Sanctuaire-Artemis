@@ -62,14 +62,12 @@
 	</div>
 
 	<div class="single-presentation">
-	
-
-		<p class="description">{@html animal.description} </p>
-			<br /><br />
-        <p>
+		<p class="description">{@html animal.description}</p>
+		<br /><br />
+		<p>
 			Il est agé de {animal.age} ans,
 			{#each animal.breeds as breed}
-				C'est un : <span class="breed">  {breed.name} !</span>
+				C'est un : <span class="breed"> {breed.name}</span>
 			{/each} <br />
 			<br />
 
@@ -83,7 +81,7 @@
 					{animal.name} adore les <img src="../src/assets/okchien.png" alt="chien-logo" /><br />
 				</span><br />
 			{:else}
-				<span>
+				<span class="incompatible">
 					{animal.name} n'est pas compatible avec les
 					<img src="../src/assets/okchien.png" alt="chat-logo" /><br />
 				</span><br />
@@ -93,7 +91,7 @@
 					{animal.name} adore les <img src="../src/assets/okchat.png" alt="chat-logo" />
 				</span>
 			{:else}
-				<span>
+				<span class="incompatible">
 					{animal.name} n'est pas compatible avec les
 					<img src="../src/assets/okchat.png" alt="chat-logo" />
 				</span>
@@ -103,14 +101,13 @@
 </main>
 
 <style>
-
 	.single {
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
 		align-items: center;
 		gap: 50px;
-		margin: 50px;
+		margin: 20px 50px;
 		flex-wrap: wrap;
 	}
 	.single-img {
@@ -128,7 +125,7 @@
 	}
 	.single-presentation {
 		width: 500px;
-		height: max-content;
+		height: 500px;
 		border: 2px solid #0f1851;
 		border-radius: 8px;
 		overflow: auto;
@@ -137,19 +134,17 @@
 	}
 	h1 {
 		font-size: 3rem;
-	color: rgb(34, 71, 113);
-	text-shadow: 2px 2px 4px rgba(12, 29, 76, 0.5);
-	margin-bottom: 20px;
-	margin-top: 20px;
-	font-family: 'bebas+neue', sans-serif;
-	text-align: center;
-	border-radius: 5px;
-    
+		color: rgb(34, 71, 113);
+		text-shadow: 2px 2px 4px rgba(12, 29, 76, 0.5);
+		margin-bottom: 20px;
+		margin-top: 20px;
+		font-family: 'bebas+neue', sans-serif;
+		text-align: center;
+		border-radius: 5px;
 
-
-	padding: 20px 40px;
+		padding: 20px 40px;
 	}
-	p{
+	p {
 		font-size: 1.1rem;
 		line-height: 1.6;
 		width: 100%;
@@ -164,19 +159,20 @@
 	.description {
 		font-weight: bold;
 		font-size: 1.2rem;
-		height:150px;
-		
+		height: 150px;
 	}
-	.breed{
+	.breed {
 		position: absolute;
 		font-weight: bold;
 		color: rgb(10, 35, 64);
 		font-size: 2rem;
-		right: 60px;
+		right: 10px;
 		top: 6px;
 
-	
-		font-family: 'bebas+neue', sans-serif;}
-		
-
+		font-family: 'bebas+neue', sans-serif;
+	}
+	.incompatible {
+		color: red;
+		font-weight: bold; /* optionnel */
+	}
 </style>
