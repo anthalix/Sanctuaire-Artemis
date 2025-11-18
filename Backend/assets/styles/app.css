@@ -3,6 +3,41 @@ body {
   background-size: cover;
   color: #fff;
 }
+.wrapper {
+  background-color: #3f698e;
+  text-align: center;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  border-radius: 8px;
+}
+.content_wrapper {
+  width: 80%;
+  margin: auto;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  padding: 20px;
+  background-color: rgb(26, 57, 91);
+  box-shadow: 0 4px 8px rgba(254, 252, 252, 0.726);
+  border-radius: 8px;
+}
+.wrapper a {
+  color: white;
+  background-color: rgb(26, 58, 98);
+  padding: 10px 15px;
+  text-decoration: none;
+  font-size: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(254, 252, 252, 0.726);
+}
+.btn_login {
+  color: white;
+  background-color: rgb(26, 58, 98);
+  padding: 7px 15px;
+  text-decoration: none;
+  font-size: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(254, 252, 252, 0.726);
+}
 .bg-color-blue {
   background-color: rgb(83, 83, 83) !important;
 }
@@ -132,4 +167,21 @@ p {
   bottom: 0;
   color: #6eafe7;
   font-size: 0.9em;
+}
+.form-label {
+  font-size: 1.5rem;
+  color: white;
+}
+.form-control {
+  font-size: 1.5rem;
+}
+.form-select {
+  font-size: 1.2rem;
+}
+.form-check-label {
+  font-size: 1.5rem;
+  color: white;
+}
+.form-check-input {
+  font-size: 1.5rem;
 }

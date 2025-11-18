@@ -5,6 +5,15 @@
 
 {% block body %}
     <h1>Ajouter un Animal</h1>
+    <script>
+   document.addEventListener("DOMContentLoaded", function() {
+    new TomSelect(".tom-select", {
+        plugins: ["remove_button"], // pour pouvoir retirer une option sélectionnée
+        create: false,               // interdit la création de nouvelles options
+        maxItems: null               // null = nombre illimité d'items sélectionnables
+    });
+});
+</script>
 
     {{form(form)}}
  

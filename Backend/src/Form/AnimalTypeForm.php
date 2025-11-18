@@ -129,7 +129,10 @@ class AnimalTypeForm extends AbstractType
                     'choice_label' => 'name',
                     'multiple' => true,
                     'expanded' => false,
-                    'required'=> false,
+                    'required' => false,
+                    'attr' => [
+                        'class' => 'tom-select', // on ajoute une classe pour TomSelect
+                    ],
                 ])
                 ->add('newBreed', TextType::class, [
                     'label' => 'Ajouter une nouvelle race',
