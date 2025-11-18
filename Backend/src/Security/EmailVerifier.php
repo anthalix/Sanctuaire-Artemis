@@ -3,7 +3,7 @@
 namespace App\Security;
 
 use App\Entity\FrontUser;
-use App\Entity\User;
+use App\Entity\Users;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,10 +17,9 @@ class EmailVerifier
         private VerifyEmailHelperInterface $verifyEmailHelper,
         private MailerInterface $mailer,
         private EntityManagerInterface $entityManager
-    ) {
-    }
+    ) {}
 
-    public function sendEmailConfirmation(string $verifyEmailRouteName, User|FrontUser $user, TemplatedEmail $email): void
+    public function sendEmailConfirmation(string $verifyEmailRouteName, Users|FrontUser $user, TemplatedEmail $email): void
     {
         $signatureComponents = $this->verifyEmailHelper->generateSignature(
             $verifyEmailRouteName,
@@ -43,18 +42,19 @@ class EmailVerifier
     /**
      * @throws VerifyEmailExceptionInterface
      */
-    public function handleEmailConfirmation(Request $request, User|FrontUser $user): void
+    public function handleEmailConfirmation(Request $request, Users|FrontUser $user): void
     {
         $this->verifyEmailHelper->validateEmailConfirmationFromRequest(
-            $request, 
+            $request,
             (string) $user->getId(),
-            (string) $user->getEmail());
+            (string) $user->getEmail()
+        );
 
         if (method_exists($user, 'setIsVerified')) {
             $user->setIsVerified(true);
         };
 
-  
+
         $this->entityManager->flush();
     }
 }

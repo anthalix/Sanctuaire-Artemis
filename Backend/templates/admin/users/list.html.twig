@@ -14,10 +14,10 @@
           <div class="list-group">
              {% for user in users %}
                  <div class="list-group-item">
-                     <p> nom : {{user.username}}</p>
-                     <p> email : {{user.email}}</p>
-                     <p> tel : {{user.tel}}</p>
-                     <p> adresse : {{user.adresse}}</p>
+                      <span>nom :</span> <p> <a href="{{path('messages', {'id' : user.id})}}">{{user.username | upper}}</a></p>
+                      <span>email :</span> <p> {{user.email}}</p>
+                      <span>tel :</span><p> {{user.tel}}</p>
+                     <span>adresse :</span> <p> {{user.adresse}}</p>
 
 
                 </div>
@@ -25,28 +25,9 @@
         </div>
     </div>
     <style>
-     .list-group-item{
-         width:200px ;
-         height: max-content;
-         background-color:lightslategrey;
-         color: whitesmoke;
-         border: 1px solid lightslategrey;
-         margin: 25px;
+   
 
-     }
-     .list-group{
-         display: flex;
-         flex-direction: row;
-     }
-
-     h1{
-         width: 100%;
-     }
-     p{
-         background-color: darkslategrey;
-         padding-left: 10px;
-     }
-
+p{text-align:center;}
 
     </style>
 

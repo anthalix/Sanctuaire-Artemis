@@ -13,26 +13,21 @@ class ContactMessage
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'contactMessages')]
-    private ?Message $message = null;
+    #[ORM\ManyToOne(targetEntity: Messages::class)]
+    private ?Messages $message = null;
 
-    #[ORM\ManyToOne(inversedBy: 'contactMessages')]
+    #[ORM\ManyToOne(targetEntity: FrontUser::class)]
     private ?FrontUser $frontUser = null;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
-    public function getMessage(): ?Message
+
+    public function getMessage(): ?Messages
     {
         return $this->message;
     }
-
-    public function setMessage(?Message $message): static
+    public function setMessage(Messages $message): static
     {
         $this->message = $message;
-
         return $this;
     }
 
@@ -40,11 +35,9 @@ class ContactMessage
     {
         return $this->frontUser;
     }
-
-    public function setFrontUser(?FrontUser $frontUser): static
+    public function setFrontUser(FrontUser $user): static
     {
-        $this->frontUser = $frontUser;
-
+        $this->frontUser = $user;
         return $this;
     }
 }

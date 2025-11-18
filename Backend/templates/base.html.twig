@@ -15,64 +15,13 @@
 			{% endblock %}
 		{% endblock %}
 	</head>
-	<style>
-		body {
-			background-color: rgb(187, 187, 187);
-		}
-		.bg-color-blue {
-			background-color: rgb(83, 83, 83) !important;
-		}
-		.navbar-brandactive {
-			color:yellow;
-			font-size: 1.5rem;
-			font-weight: bold;
-			text-decoration: none;
-			margin-right:10px;
 
-
-
-		}
-		.navbar-brand {
-			color: white;
-			font-size: 1.5rem;
-			font-weight: bold;
-			text-decoration: none;
-		}
-		.nav-link {
-			color: white;
-			
-
-		}
-		.container-fluid {
-			display: flex;
-			align-items: center;
-		}
-
-		#navbarNav {
-			padding-top: 0.2rem;
-
-		}
-	</style>
 
 
 	<body>
-		<nav class="navbar navbar-expand bg-body-light bg-color-blue ">
-			<div class="container-fluid d-flex align-items-center gap-4">
-				<div class="d-flex align-items-center mg-5 gap-4">
-					<a class="navbar-brand" href="{{path('home')}}">Accueil</a>
+		
 
-
-					<ul class="navbar-nav mg-5">
-
-					
-					
-						<li class="nav-item">
-							<a class="navbar-brand{{ app.current_route == 'app_login'? 'active' :''}}" aria-current="page" href="{{path('app_login')}}">Se connecter</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</nav>
+	
 		<div class="container my-5" >
 
 			{% include 'partials/flash.html.twig'%}

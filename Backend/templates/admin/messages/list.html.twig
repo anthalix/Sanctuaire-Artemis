@@ -1,0 +1,27 @@
+{% extends 'admin/admin.html.twig' %}
+{% block body %}
+ {% for message in messages %}
+    <div class="message">
+        <div class="header">
+            {% if message.from_admin %}
+                Admin
+            {% else %}
+                {{ user.username }}
+            {% endif %}:
+        </div> 
+        <div class="content">
+        {{ message.content }}
+       
+        </div>
+         <span class="span">{{ message.createdAt|date('d/m/Y H:i') }}</span>
+    
+    </div>
+{% else %}
+    <p>Aucun message pour cet utilisateur.</p>
+{% endfor %}
+
+{% endblock %}
+
+
+
+

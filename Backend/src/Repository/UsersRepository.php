@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\User;
+use App\Entity\Users;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -12,11 +12,11 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 /**
  * @extends ServiceEntityRepository<User>
  */
-class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
+class UsersRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, User::class);
+        parent::__construct($registry, Users::class);
     }
 
     /**
@@ -24,7 +24,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      */
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
-        if (!$user instanceof User) {
+        if (!$user instanceof Users) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $user::class));
         }
 
@@ -36,17 +36,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     //    /**
     //     * @return User[] Returns an array of User objects
     //     */
-            public function findByEmailOrUsername( string $usernameOrEmail): ?user
-            {
+    public function findByEmailOrUsername(string $usernameOrEmail): ?users
+    {
 
 
-                return $this->createQueryBuilder('u')
-                    ->andWhere('u.email = :identifier OR u.username = :identifier')
-                    ->setParameter('identifier', $usernameOrEmail)
-                    ->setMaxResults(1)
-                    ->getQuery()
-                    ->getOneOrNullResult()
-                ;
-            }
-  
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.email = :identifier OR u.username = :identifier')
+            ->setParameter('identifier', $usernameOrEmail)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

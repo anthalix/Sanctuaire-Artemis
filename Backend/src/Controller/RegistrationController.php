@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
+use App\Entity\Users;
 use App\Entity\FrontUser;
 use App\Service\RoleManager;
 use App\Form\RegistrationForm;
@@ -30,10 +30,10 @@ class RegistrationController extends AbstractController
 
     ) {}
 
-    #[Route('/register', name: 'register', methods: [ 'GET', 'POST'])]
+    #[Route('/register', name: 'register', methods: ['GET', 'POST'])]
     public function register(Request $request, Security $security, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
-        $user = new User();
+        $user = new Users();
         $form = $this->createForm(RegistrationForm::class, $user);
         $form->handleRequest($request);
 
@@ -72,16 +72,18 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/verify/email', name: 'app_verify_email')]
-    public function verifyUserEmail(Request $request, TranslatorInterface $translator): Response
+    public function verifyUserEmail(Request $request, TranslatorInterface $translator, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         // validate email confirmation link, sets User::isVerified=true and persists
         try {
-            /** @var User $user */
+            /** @var Users $user */
             $user = $this->getUser();
             $this->emailVerifier->handleEmailConfirmation($request, $user);
             $this->roleManager->assignRolesOnVerification($user);
+            $entityManager->persist($user);
+            $entityManager->flush();
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
 
@@ -93,6 +95,4 @@ class RegistrationController extends AbstractController
 
         return $this->redirectToRoute('admin.animals.index');
     }
-
-
 }

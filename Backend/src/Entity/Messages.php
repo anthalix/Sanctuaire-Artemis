@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\MessageRepository;
+use App\Repository\MessagesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: MessageRepository::class)]
-#[ORM\Table(name: "message")] // nom exact de la table
-class Message
+#[ORM\Entity(repositoryClass: MessagesRepository::class)]
+#[ORM\Table(name: "messages")] // nom exact de la table
+class Messages
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -22,6 +22,9 @@ class Message
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $from_admin = false;
 
 
     #[ORM\ManyToMany(targetEntity: FrontUser::class, inversedBy: "messages")]
@@ -66,8 +69,29 @@ class Message
     }
 
 
+
+
     /**
      * @return Collection<int, ContactMessage>
      */
 
+    /**
+     * Get the value of from_admin
+     */
+    public function getFrom_admin()
+    {
+        return $this->from_admin;
+    }
+
+    /**
+     * Set the value of from_admin
+     *
+     * @return  self
+     */
+    public function setFrom_admin($from_admin)
+    {
+        $this->from_admin = $from_admin;
+
+        return $this;
+    }
 }

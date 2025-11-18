@@ -2,23 +2,22 @@
 
 namespace App\Controller\Api;
 
-use App\Entity\User;
-use App\Entity\Message;
+
+use App\Entity\Users;
+use App\Entity\Messages;
 use App\Entity\FrontUser;
 use App\Service\RoleManager;
 use App\Security\EmailVerifier;
 use Symfony\Component\Mime\Address;
-use App\Repository\FrontUserRepository;
-;
+use App\Repository\FrontUserRepository;;
+
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
-
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
@@ -29,109 +28,109 @@ final class FrontController extends AbstractController
 
 {
 
-#[Route('/api/register', name: 'api_register', methods: ['POST'])]
-public function apiRegister(
-    Request $request,
-    UserPasswordHasherInterface $passwordHasher,
-    EmailVerifier $emailVerifier,
-    EntityManagerInterface $entityManager
-): JsonResponse {
-    $data = json_decode($request->getContent(), true);
+    #[Route('/api/register', name: 'api_register', methods: ['POST'])]
+    public function apiRegister(
+        Request $request,
+        UserPasswordHasherInterface $passwordHasher,
+        EmailVerifier $emailVerifier,
+        EntityManagerInterface $entityManager
+    ): JsonResponse {
+        $data = json_decode($request->getContent(), true);
 
-    $username = $data['username'] ?? null;
-    $email = $data['email'] ?? null;
-    $tel = $data['tel'] ?? null;
-    $adresse= $data['adresse'] ?? null;
-    $password = $data['password'] ?? null;
+        $username = $data['username'] ?? null;
+        $email = $data['email'] ?? null;
+        $tel = $data['tel'] ?? null;
+        $adresse = $data['adresse'] ?? null;
+        $password = $data['password'] ?? null;
 
-    if (!$email || !$password || !$username) {
-        return new JsonResponse(['error' => 'Paramètres manquants'], 400);
+        if (!$email || !$password || !$username) {
+            return new JsonResponse(['error' => 'Paramètres manquants'], 400);
+        }
+
+        if ($entityManager->getRepository(FrontUser::class)->findOneBy(['email' => $email])) {
+            return new JsonResponse(['error' => 'Email déjà utilisé'], 400);
+        }
+
+        $FrontUser = new FrontUser();
+        $FrontUser->setEmail($email);
+        $FrontUser->setUsername($username);
+        $FrontUser->setTel($tel);
+        $FrontUser->setAdresse($adresse);
+        $FrontUser->setPassword($passwordHasher->hashPassword($FrontUser, $password));
+
+        $entityManager->persist($FrontUser);
+        $entityManager->flush();
+
+        // Envoi de l’email de confirmation (Symfony gère le signedUrl automatiquement)
+        $emailVerifier->sendEmailConfirmation(
+            'api_verify_email', // nom de la route qui gère la vérification
+            $FrontUser,
+            (new TemplatedEmail())
+                ->from(new Address('support@io.fr', 'Support'))
+                ->to($FrontUser->getEmail())
+                ->subject('Confirmez votre email')
+                ->htmlTemplate('registration/confirmation_email_svelte.html.twig')
+                ->context([
+                    'FrontUser' => $FrontUser,
+                ])
+        );
+
+        return new JsonResponse([
+            'message' => 'Utilisateur créé. Veuillez vérifier votre email.'
+        ]);
     }
 
-    if ($entityManager->getRepository(FrontUser::class)->findOneBy(['email' => $email])) {
-        return new JsonResponse(['error' => 'Email déjà utilisé'], 400);
+
+    #[Route('/api/verify-email', name: 'api_verify_email', methods: ['GET'])]
+    public function apiVerifyEmail(
+        Request $request,
+        EntityManagerInterface $em,
+        EmailVerifier $emailVerifier,
+        RoleManager $roleManager
+    ): Response {
+        // Récupère l'ID dans l'URL
+        $id = $request->query->get('id');
+
+        if (!$id) {
+            // Redirige vers page d'erreur front si pas d'ID
+            return $this->redirect('http://localhost:5173/verify-email-error');
+        }
+
+        // Cherche l'utilisateur dans les deux entités possibles
+        $user = $em->getRepository(FrontUser::class)->find($id)
+            ?? $em->getRepository(Users::class)->find($id);
+
+        if (!$user) {
+            return $this->redirect('http://localhost:5173/verify-email-error');
+        }
+
+        try {
+            // Confirme l'email
+            $emailVerifier->handleEmailConfirmation($request, $user);
+
+            // Assigne les rôles correctement
+            $roleManager->assignRolesOnVerification($user);
+
+            // Persist et flush pour sauvegarder isVerified + rôles
+            $em->persist($user);
+            $em->flush();
+
+            // Redirection vers le front avec l’ID utilisateur
+            return $this->redirect('http://localhost:5173/verify-email-success/' . $user->getId());
+        } catch (VerifyEmailExceptionInterface $e) {
+            // Lien invalide ou expiré
+            return $this->redirect('http://localhost:5173/verify-email-error');
+        } catch (\Throwable $e) {
+            // Erreur serveur
+            // Tu peux logger $e->getMessage() ici si besoin
+            return $this->redirect('http://localhost:5173/verify-email-error');
+        }
     }
 
-    $FrontUser = new FrontUser();
-    $FrontUser->setEmail($email);
-    $FrontUser->setUsername($username);
-    $FrontUser->setTel($tel);
-    $FrontUser->setAdresse($adresse);
-    $FrontUser->setPassword($passwordHasher->hashPassword($FrontUser, $password));
-
-    $entityManager->persist($FrontUser);
-    $entityManager->flush();
-
-    // Envoi de l’email de confirmation (Symfony gère le signedUrl automatiquement)
-    $emailVerifier->sendEmailConfirmation(
-        'api_verify_email', // nom de la route qui gère la vérification
-        $FrontUser,
-        (new TemplatedEmail())
-            ->from(new Address('support@io.fr', 'Support'))
-            ->to($FrontUser->getEmail())
-            ->subject('Confirmez votre email')
-            ->htmlTemplate('registration/confirmation_email_svelte.html.twig')
-            ->context([
-                'FrontUser' => $FrontUser,
-            ])
-    );
-
-    return new JsonResponse([
-        'message' => 'Utilisateur créé. Veuillez vérifier votre email.'
-    ]);
-}
 
 
-#[Route('/api/verify-email', name: 'api_verify_email', methods: ['GET'])]
-public function apiVerifyEmail(
-    Request $request,
-    EntityManagerInterface $em,
-    EmailVerifier $emailVerifier,
-    RoleManager $roleManager
-): Response {
-    // Récupère l'ID dans l'URL
-    $id = $request->query->get('id');
-
-    if (!$id) {
-        // Redirige vers page d'erreur front si pas d'ID
-        return $this->redirect('http://localhost:5173/verify-email-error');
-    }
-
-    // Cherche l'utilisateur dans les deux entités possibles
-    $user = $em->getRepository(FrontUser::class)->find($id)
-        ?? $em->getRepository(User::class)->find($id);
-
-    if (!$user) {
-        return $this->redirect('http://localhost:5173/verify-email-error');
-    }
-
-    try {
-        // Confirme l'email
-        $emailVerifier->handleEmailConfirmation($request, $user);
-
-        // Assigne les rôles correctement
-        $roleManager->assignRolesOnVerification($user);
-
-        // Persist et flush pour sauvegarder isVerified + rôles
-        $em->persist($user);
-        $em->flush();
-
-        // Redirection vers le front avec l’ID utilisateur
-        return $this->redirect('http://localhost:5173/verify-email-success/' . $user->getId());
-    } catch (VerifyEmailExceptionInterface $e) {
-        // Lien invalide ou expiré
-        return $this->redirect('http://localhost:5173/verify-email-error');
-    } catch (\Throwable $e) {
-        // Erreur serveur
-        // Tu peux logger $e->getMessage() ici si besoin
-        return $this->redirect('http://localhost:5173/verify-email-error');
-    }
-}
-
-
-   
     #[Route('/api/login', name: 'api_login', methods: ['POST'])]
-    public function apiLogin(Request $request, UserPasswordHasherInterface $passwordHasher,FrontUserRepository $frontuserRepository,JWTTokenManagerInterface $jwtManager): JsonResponse
+    public function apiLogin(Request $request, UserPasswordHasherInterface $passwordHasher, FrontUserRepository $frontuserRepository, JWTTokenManagerInterface $jwtManager): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         $email = $data['email'] ?? null;
@@ -140,32 +139,34 @@ public function apiVerifyEmail(
 
         if (!$user || !$passwordHasher->isPasswordValid($user, $data['password'])) {
             return $this->json(['success' => false, 'message' => 'Invalid credentials'], 401);
+        } else {
+
+
+            $token = $jwtManager->create($user);
+
+
+
+            return $this->json([
+                'token' => $token,
+                'user' => [
+                    'id' => $user->getId(),
+                    'email' => $user->getEmail(),
+                    'username' => $user->getUsername(),
+                    'tel' => $user->getTel(),
+                    'adresse' => $user->getAdresse(),
+                    'roles' => $user->getRoles()
+
+
+                ]
+            ]);
         }
-
-        // Stocker l'ID utilisateur en session
-        $session = $request->getSession();
-        $session->set('user_id', $user->getId());
-
-        $token = $jwtManager->create($user);
-
-        return $this->json([
-            'token' => $token,
-            'user' => [
-                'id' => $user->getId(),
-                'email' => $user->getEmail(),
-                'username' => $user->getUsername(),
-                'tel'=>$user->getTel(),
-                'adresse'=>$user->getAdresse()
-
-            ]
-        ]);
     }
 
     #[Route('/api/message', name: 'api_message', methods: ['POST'])]
     public function create(
-    Request $request,
-    EntityManagerInterface $em,
-    FrontUserRepository $userRepo
+        Request $request,
+        EntityManagerInterface $em,
+        FrontUserRepository $userRepo
     ): JsonResponse {
         $data = json_decode($request->getContent(), true);
         // Vérifie que userId et message sont présents
@@ -179,7 +180,7 @@ public function apiVerifyEmail(
         }
 
         // Création du message
-        $messageEntity = new Message();
+        $messageEntity = new Messages();
         $messageEntity->setContent($data['message']);
 
         $messageEntity->getUsers()->add($user); // si ManyToMany avec contact_message
@@ -192,16 +193,65 @@ public function apiVerifyEmail(
             'id' => $messageEntity->getId()
         ], 201);
     }
-    #[Route('/api/front-user/{id}', name: 'api_front_user', methods: ['GET'])]
-public function getFrontUser(FrontUser $user): JsonResponse {
-    return $this->json([
-        'id' => $user->getId(),
-        'username' => $user->getUsername(),
-        'email' => $user->getEmail(),
-        'roles' => $user->getRoles(),
-    ]);
-}
+    #[Route('/api/modif', name: 'api.modif', methods: ['POST'])]
+    public function modif(
+        Request $request,
+        EntityManagerInterface $em,
+        ValidatorInterface $validator
+    ): JsonResponse {
+        $data = json_decode($request->getContent(), true);
 
+        if (!$data) {
+            return new JsonResponse(['error' => 'Requête invalide'], 400);
+        }
 
+        /** @var FrontUser $user */
+        $user = $this->getUser();
 
+        if (!$user) {
+            return new JsonResponse(['error' => 'Utilisateur non connecté'], 401);
+        }
+
+        // Mise à jour des champs
+        $fields = [
+            'username' => 'setUsername', // ✅ Ajouté
+            'email'    => 'setEmail',
+            'tel'      => 'setTel',
+            'adresse'  => 'setAdresse'
+        ];
+
+        foreach ($fields as $field => $setter) {
+            if (array_key_exists($field, $data) && $data[$field] !== null && $data[$field] !== '') {
+                $user->$setter($data[$field]);
+            }
+        }
+
+        // Validation
+        $errors = $validator->validate($user);
+        if (count($errors) > 0) {
+            $errorMessages = [];
+            foreach ($errors as $error) {
+                $errorMessages[$error->getPropertyPath()] = $error->getMessage();
+            }
+            return new JsonResponse(['error' => 'Données invalides', 'details' => $errorMessages], 400);
+        }
+
+        try {
+            $em->flush();
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => 'Erreur lors de la sauvegarde'], 500);
+        }
+
+        return new JsonResponse([
+            'message' => 'Profil mis à jour avec succès.',
+            'user' => [
+                'id' => $user->getId(),
+                'username' => $user->getUsername(),
+                'email' => $user->getEmail(),
+                'tel' => $user->getTel(),
+                'adresse' => $user->getAdresse(),
+                'roles' => $user->getRoles()
+            ]
+        ]);
+    }
 }

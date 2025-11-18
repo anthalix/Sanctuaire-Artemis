@@ -39,7 +39,7 @@ class FrontUser implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
-    #[ORM\ManyToMany(targetEntity: Message::class, mappedBy: "users")]
+    #[ORM\ManyToMany(targetEntity: Messages::class, mappedBy: "users")]
     private Collection $messages;
 
     public function __construct()
@@ -49,26 +49,71 @@ class FrontUser implements UserInterface, PasswordAuthenticatedUserInterface
 
 
     // --- Getters / Setters ---
-    public function getId(): ?int { return $this->id; }
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-    public function getEmail(): string { return $this->email; }
-    public function setEmail(string $email): self { $this->email = $email; return $this; }
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+        return $this;
+    }
 
-    public function getUsername(): string { return $this->username; }
-    public function setUsername(string $username): self { $this->username = $username; return $this; }
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+        return $this;
+    }
 
-    public function getPassword(): string { return $this->password; }
-    public function setPassword(string $password): self { $this->password = $password; return $this; }
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+        return $this;
+    }
 
-    public function getTel(): ?string { return $this->tel; }
-    public function setTel(?string $tel): self { $this->tel = $tel; return $this; }
+    public function getTel(): ?string
+    {
+        return $this->tel;
+    }
+    public function setTel(?string $tel): self
+    {
+        $this->tel = $tel;
+        return $this;
+    }
 
-    public function getAdresse(): ?string { return $this->adresse; }
-    public function setAdresse(?string $adresse): self { $this->adresse = $adresse; return $this; }
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+    public function setAdresse(?string $adresse): self
+    {
+        $this->adresse = $adresse;
+        return $this;
+    }
 
 
-    public function isVerified(): bool { return $this->isVerified; }
-    public function setIsVerified(bool $isVerified): self { $this->isVerified = $isVerified; return $this; }
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
+        return $this;
+    }
 
     public function getRoles(): array
     {
@@ -76,16 +121,22 @@ class FrontUser implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($this->roles);
     }
 
-    public function setRoles(array $roles): self { $this->roles = $roles; return $this; }
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+        return $this;
+    }
 
-    public function getUserIdentifier(): string { return $this->email; }
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
+    }
 
     public function eraseCredentials(): void {}
 
 
-    public function getMessages(): Collection { return $this->messages; }
-
-
-
-
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
 }

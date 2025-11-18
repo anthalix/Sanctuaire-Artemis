@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\FrontUser;
 use App\Entity\ContactMessage;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<ContactMessage>
@@ -15,6 +16,9 @@ class ContactMessageRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, ContactMessage::class);
     }
+
+
+
 
     //    /**
     //     * @return ContactMessage[] Returns an array of ContactMessage objects

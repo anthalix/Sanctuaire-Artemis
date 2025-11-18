@@ -2,18 +2,30 @@
 
 namespace App\Repository;
 
-use App\Entity\Message;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Entity\Messages;
+use App\Entity\FrontUser;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Message>
  */
-class MessageRepository extends ServiceEntityRepository
+class MessagesRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Message::class);
+        parent::__construct($registry, Messages::class);
+    }
+    public function findMessagesForUser(FrontUser $user): array
+    {
+        return $this->createQueryBuilder('m')
+            ->innerJoin('m.users', 'u')
+            ->addSelect('u')
+            ->where('u.id = :userId')
+            ->setParameter('userId', $user->getId())
+
+            ->getQuery()
+            ->getResult();
     }
 
     //    /**

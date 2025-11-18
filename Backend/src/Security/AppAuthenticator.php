@@ -2,7 +2,7 @@
 
 namespace App\Security;
 
-use App\Repository\UserRepository;
+use App\Repository\UsersRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +23,7 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
 
     public const LOGIN_ROUTE = 'app_login';
 
-    public function __construct(private UrlGeneratorInterface $urlGenerator,  private UserRepository $userRepository) {}
+    public function __construct(private UrlGeneratorInterface $urlGenerator,  private UsersRepository $usersRepository) {}
 
     public function authenticate(Request $request): Passport
     {
@@ -32,7 +32,7 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
         $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $username);
 
         return new Passport(
-            new UserBadge($username, fn(string $identifier) => $this->userRepository->findByEmailOrUsername($identifier)),
+            new UserBadge($username, fn(string $identifier) => $this->usersRepository->findByEmailOrUsername($identifier)),
             new PasswordCredentials($request->getPayload()->getString('password')),
             [
                 new CsrfTokenBadge('authenticate', $request->getPayload()->getString('_csrf_token')),
@@ -43,7 +43,7 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-       
+
         return new RedirectResponse($this->urlGenerator->generate('admin.animals.index'));
     }
 

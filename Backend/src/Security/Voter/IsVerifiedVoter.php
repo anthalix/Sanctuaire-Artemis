@@ -1,8 +1,9 @@
 <?php
+
 namespace App\Security\Voter;
 
 use App\Entity\FrontUser;
-use App\Entity\User;
+use App\Entity\Users;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -19,7 +20,7 @@ class IsVerifiedVoter extends Voter
         $user = $token->getUser();
 
         // Vérifie si c'est un User ou un FrontUser
-        if (!$user instanceof User && !$user instanceof FrontUser) {
+        if (!$user instanceof Users && !$user instanceof FrontUser) {
             return false;
         }
 
