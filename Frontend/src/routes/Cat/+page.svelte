@@ -2,6 +2,8 @@
 	// data vient automatiquement de ton +page.ts
 	export let data;
 	const cats = data.cats;
+	let BASE_URL = data.BASE_URL;
+
 	let Race = '';
 	let Age = '';
 	let Sexe = '';
@@ -78,7 +80,7 @@
 					<div class="card">
 						<a href="animal/{cat.id}" title="CHATS ">
 							<img
-								src={`http://localhost:8000/animals/images/${cat.thumbnail}`}
+								src={`${BASE_URL}/animals/images/${cat.thumbnail}`}
 								class="card-img-top"
 								alt={cat.name}
 							/>
@@ -156,17 +158,5 @@
 		border: 1px solid #0d255c;
 		border-radius: 4px;
 		font-size: 0.8rem;
-	}
-	h1 {
-		font-size: 3rem;
-		color: rgb(34, 71, 113);
-		text-shadow: 2px 2px 4px rgba(12, 29, 76, 0.5);
-		margin-bottom: 20px;
-		margin-top: 20px;
-		font-family: 'bebas+neue', sans-serif;
-		text-align: center;
-		border-radius: 5px;
-
-		padding: 20px 40px;
 	}
 </style>

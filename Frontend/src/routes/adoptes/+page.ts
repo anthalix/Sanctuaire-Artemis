@@ -1,8 +1,12 @@
-
 import type { PageLoad } from './$types';
+import { getApiUrl } from '$lib/getApiUrl.js';
+import { getBaseUrl } from '$lib/getBaseUrl.js';
 
 export const load: PageLoad = async ({ fetch }) => {
-	const res = await fetch('http://localhost:8000/api/adopted');
+	const API_URL = await getApiUrl();
+	const BASE_URL = await getBaseUrl();
+
+	const res = await fetch(`${API_URL}/adopted`);
 
 	if (!res.ok) {
 		return {
@@ -14,6 +18,7 @@ export const load: PageLoad = async ({ fetch }) => {
 	const adoptes = await res.json();
 
 	return {
-		adoptes
+		adoptes,
+		BASE_URL
 	};
 };

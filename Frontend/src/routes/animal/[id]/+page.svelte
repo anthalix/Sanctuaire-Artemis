@@ -35,7 +35,7 @@
 				</div>
 				<div class="carousel-item">
 					<img
-						src={`http://localhost:8000/animals/images/${animal.thumbnail}`}
+						src={`http://localhost:8001/animals/images/${animal.thumbnail}`}
 						alt="animal thumbnail"
 					/>
 				</div>
@@ -63,13 +63,15 @@
 
 	<div class="single-presentation">
 		<p class="description">{@html animal.description}</p>
-		<br /><br />
+
+		{#each animal.breeds as breed}
+			C'est un : <span class="breed"> {breed.name}</span>
+		{/each}
+
 		<p>
 			Il est agé de {animal.age} ans,
-			{#each animal.breeds as breed}
-				C'est un : <span class="breed"> {breed.name}</span>
-			{/each} <br />
-			<br />
+
+			<br /><br />
 
 			{#if animal.child === true}
 				<span>
@@ -132,18 +134,7 @@
 		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 		padding: 15px;
 	}
-	h1 {
-		font-size: 3rem;
-		color: rgb(34, 71, 113);
-		text-shadow: 2px 2px 4px rgba(12, 29, 76, 0.5);
-		margin-bottom: 20px;
-		margin-top: 20px;
-		font-family: 'bebas+neue', sans-serif;
-		text-align: center;
-		border-radius: 5px;
 
-		padding: 20px 40px;
-	}
 	p {
 		font-size: 1.1rem;
 		line-height: 1.6;
@@ -162,12 +153,12 @@
 		height: 150px;
 	}
 	.breed {
-		position: absolute;
 		font-weight: bold;
 		color: rgb(10, 35, 64);
-		font-size: 2rem;
-		right: 10px;
-		top: 6px;
+		text-shadow: 2px 2px 4px rgba(201, 215, 253, 0.5);
+		margin-left: 15px;
+
+		font-size: 3rem;
 
 		font-family: 'bebas+neue', sans-serif;
 	}

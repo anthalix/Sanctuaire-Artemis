@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-
+	import { getApiUrl } from '$lib/getApiUrl.js';
+	let API_URL: string;
 	let user: {
 		id: number;
 		username: string;
@@ -23,14 +24,17 @@
 			window.location.href = '/login';
 		}
 	});
-
+	(async () => {
+		API_URL = await getApiUrl();
+	})();
 	async function sendMessage() {
 		if (!user) {
 			error = 'Utilisateur non trouvé';
 			return;
 		}
 		try {
-			const response = await fetch('http://localhost:8000/api/message', {
+			if (!API_URL) API_URL = await getApiUrl();
+			const response = await fetch(`${API_URL}/message`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -61,19 +65,15 @@
 <div class="container_register">
 	<div class="card">
 		<ul>
-			<li>Pseudo :</li>
-			<li>{user?.username}</li>
-			<li>Email :</li>
-			<li>{user?.email}</li>
-			<li>Téléphone :</li>
-			<li>{user?.tel}</li>
-			<li>Adresse :</li>
-			<li>{user?.adresse}</li>
-			<button class="btn btn-primary">Modifier mes infos</button>
+			<li>Pseudo : {user?.username}</li>
+			<li>Email : {user?.email}</li>
+			<li>Téléphone : {user?.tel}</li>
+			<li>Adresse : {user?.adresse}</li>
+			<a href="Modif">Modifier mes infos</a>
 		</ul>
 	</div>
 	<div class="select_register">
-		<h2>Nous contacter</h2>
+		<h1>Nous contacter</h1>
 		<form on:submit|preventDefault={sendMessage}>
 			<textarea
 				bind:value={message}
@@ -129,7 +129,7 @@
 		background-color: rgb(34, 71, 113);
 	}
 	.select_register {
-		background-color: rgb(61, 93, 132);
+		background-color: rgb(97, 134, 180);
 		margin: 30px;
 		padding: 2rem;
 		border-radius: 10px;
@@ -146,11 +146,12 @@
 	}
 	.card {
 		background-color: rgb(14, 39, 88);
-		padding-right: 15px;
+		padding-right: 50px;
 		border-radius: 10px;
 		box-shadow: 0 6px 10px white;
-
+		width: 600px;
 		color: rgb(254, 253, 253);
+		margin-right: 150px;
 	}
 	.btn {
 		width: 100%;

@@ -5,9 +5,14 @@
 	let adresse = '';
 	let password = '';
 	let message = '';
+	import { getApiUrl } from '$lib/getApiUrl.js';
+	let API_URL: string;
 
+	(async () => {
+		API_URL = await getApiUrl();
+	})();
 	async function register() {
-		const res = await fetch('http://localhost:8000/api/register', {
+		const res = await fetch(`${API_URL}/register`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -28,13 +33,25 @@
 			}
 		}
 	}
+
+	// Fonction qui formate le numéro avec des tirets tous les 2 chiffres
+	function formatTel(event: Event) {
+		const target = event.target as HTMLInputElement;
+		let value = target.value.replace(/\D/g, ''); // supprime tout sauf chiffres
+		value = value.slice(0, 10); // limite à 10 chiffres (numéro FR classique)
+
+		// ajoute un tiret tous les 2 chiffres
+		let formatted = value.replace(/(\d{2})(?=\d)/g, '$1-');
+		tel = formatted;
+	}
 </script>
 
 <div class="container_register">
 	<div class="select_register">
 		<form on:submit|preventDefault={register} class="flex flex-col gap-3">
-			<h2>Créer un compte</h2>
+			<h1>Créer un compte</h1>
 			<div class="form">
+				<label for="username"></label>
 				<input
 					type="text"
 					placeholder="Pseudo"
@@ -42,21 +59,25 @@
 					required
 					class=" p-2 border rounded"
 				/>
+				<label for="email"></label>
 				<input
 					type="email"
 					placeholder="Email"
 					bind:value={email}
 					required
-					class=" p-2 border rounded"
+					class=" p-1 border rounded"
 				/>
+				<label for="tel"></label>
 				<input
-					type="text"
+					type="tel"
 					placeholder="telephone"
 					bind:value={tel}
+					on:input={formatTel}
 					required
 					class=" p-2 border rounded"
 				/>
 			</div>
+			<label for="adresse"></label>
 			<textarea
 				placeholder="Adresse"
 				bind:value={adresse}
@@ -65,7 +86,7 @@
 				id="adresse"
 			>
 			</textarea>
-
+			<label for="password"></label>
 			<input
 				type="password"
 				placeholder="Mot de passe"
@@ -103,12 +124,13 @@
 		display: flex;
 		flex-direction: row;
 		gap: 1rem;
+		margin-left: -22px;
+		margin-right: 10px;
+
 		width: 100%;
 	}
-	.form input {
-		width: 175px;
-		padding-left: 15px;
-		font-size: 0.8rem;
+	input {
+		width: 170px;
 	}
 
 	.container_register {
@@ -121,7 +143,7 @@
 		background-color: rgb(34, 71, 113);
 	}
 	.select_register {
-		background-color: rgb(61, 93, 132);
+		background-color: rgb(97, 134, 180);
 		margin: 30px;
 		padding: 2rem;
 		border-radius: 10px;

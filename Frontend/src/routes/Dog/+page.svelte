@@ -2,6 +2,8 @@
 	// data vient automatiquement de ton +page.ts
 	export let data;
 	const dogs = data.dogs;
+	let BASE_URL = data.BASE_URL;
+
 	let Race = '';
 	let Age = '';
 	let Sexe = '';
@@ -9,7 +11,7 @@
 
 	const breeds = Array.from(
 		new Map(dogs.flatMap((dog) => dog.breeds).map((breed) => [breed.name, breed])).values()
-	);
+	).sort((a, b) => a.name.localeCompare(b.name));
 
 	// recalculer la liste filtrée à chaque changement
 	$: filteredDogs = dogs.filter((dog) => {
@@ -24,6 +26,13 @@
 
 		return matchRace && matchSexe && matchAge && matchTaille;
 	});
+	const ordreTaille = ['petite', 'moyenne', 'grande'];
+
+	let taillesUniques = Array.from(new Set(dogs.map((dog) => dog.taille)));
+	taillesUniques.sort((a, b) => ordreTaille.indexOf(a) - ordreTaille.indexOf(b));
+
+	let agesUniques = Array.from(new Set(dogs.map((dog) => dog.age)));
+	agesUniques.sort((a, b) => a - b);
 </script>
 
 <h1>Liste des chiens 🐾</h1>
@@ -43,16 +52,16 @@
 					<option value={sexe}>{sexe}</option>
 				{/each}
 			</select>
-			<select bind:value={Age} aria-label="tri par age" class="form-select">
-				<option value=""> Age </option>
-				{#each Array.from(new Set(dogs.map((dog) => dog.age))) as age}
+			<select bind:value={Age} aria-label="tri par âge" class="form-select">
+				<option value="">Âge</option>
+				{#each agesUniques as age}
 					<option value={age}>{age}</option>
 				{/each}
 			</select>
 
 			<select bind:value={Taille} aria-label="tri par taille" class="form-select">
-				<option value=""> Taille </option>
-				{#each Array.from(new Set(dogs.map((dog) => dog.taille))) as taille}
+				<option value="">Taille</option>
+				{#each taillesUniques as taille}
 					<option value={taille}>{taille}</option>
 				{/each}
 			</select>
@@ -81,7 +90,7 @@
 						{/if}
 						<a href="animal/{dog.id}" title="CHIENS ">
 							<img
-								src={`http://localhost:8000/animals/images/${dog.thumbnail}`}
+								src={`${BASE_URL}/animals/images/${dog.thumbnail}`}
 								class="card-img-top"
 								alt={dog.name}
 							/>
@@ -107,7 +116,7 @@
 	.ribbon {
 		width: 120px;
 		height: 30px;
-		background: red;
+		background: rgb(164, 1, 1);
 		color: white;
 		font-weight: bold;
 		text-align: center;
@@ -178,8 +187,8 @@
 	}
 	h1 {
 		font-size: 3rem;
-		color: rgb(34, 71, 113);
-		text-shadow: 2px 2px 4px rgba(12, 29, 76, 0.5);
+		color: rgb(11, 45, 84);
+		text-shadow: 2px 2px 4px rgba(201, 215, 253, 0.5);
 		margin-bottom: 20px;
 		margin-top: 20px;
 		font-family: 'bebas+neue', sans-serif;

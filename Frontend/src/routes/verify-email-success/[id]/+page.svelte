@@ -6,13 +6,16 @@
 	let successMessage = 'Email vérifié avec succès !';
 	let user: { id: number; username: string; email: string; roles: string[] } | null = null;
 
+	import { getApiUrl } from '$lib/getApiUrl.js';
+	const API_URL = getApiUrl();
+
 	onMount(async () => {
 		const userId = params.id;
 
 		if (!userId) return;
 
 		try {
-			const response = await fetch(`http://localhost:8000/api/front-user/${userId}`);
+			const response = await fetch(`${API_URL}/front-user/${userId}`);
 			if (response.ok) {
 				user = await response.json();
 				localStorage.setItem('user', JSON.stringify(user));

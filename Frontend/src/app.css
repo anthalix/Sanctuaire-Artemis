@@ -1,5 +1,7 @@
+/* Tailwind directives removed for standard CSS compatibility */
+
 body {
-	background-color: rgb(104, 160, 224);
+	background-color: rgb(91, 131, 176);
 }
 
 header {
@@ -84,6 +86,36 @@ ul {
 	padding: 5px 10px;
 	border-radius: 10px;
 }
+.title_home {
+	font-size: 4rem;
+	color: rgb(11, 45, 84);
+	text-shadow: 2px 2px 4px rgba(201, 215, 253, 0.5);
+	margin-bottom: 20px;
+	margin-top: 20px;
+	font-family: 'bebas+neue', sans-serif;
+	text-align: center;
+	border-radius: 5px;
+
+	padding: 20px 40px;
+}
+h1 {
+	font-size: 3rem;
+	color: rgb(11, 45, 84);
+	text-shadow: 2px 2px 4px rgba(201, 215, 253, 0.5);
+	margin-bottom: 20px;
+	margin-top: 20px;
+	font-family: 'bebas+neue', sans-serif;
+	text-align: center;
+	border-radius: 5px;
+
+	padding: 20px 40px;
+}
+h2 {
+	color: rgb(11, 45, 84);
+	text-shadow: 2px 2px 4px rgba(201, 215, 253, 0.5);
+	font-family: 'bebas+neue', sans-serif;
+	text-align: center;
+}
 .cta {
 	transition: all 0.8s ease-in-out;
 	display: flex;
@@ -142,7 +174,8 @@ ul {
 	font-weight: 3rem;
 	justify-content: space-between;
 
-	color: rgb(23, 236, 94);
+	color: white;
+	text-shadow: 4px 4px 10px black;
 }
 
 .container {
@@ -185,21 +218,27 @@ ul {
 	height: max-content;
 	padding: 20px 20px;
 }
-.title_home {
-	font-size: 3rem;
-	color: rgb(34, 71, 113);
-	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-	margin-bottom: 20px;
-	margin-top: 20px;
-	font-family: 'bebas+neue', sans-serif;
-	text-align: center;
-	border-radius: 5px;
-	background-color: rgb(131, 194, 249);
-	padding: 20px 40px;
+.select_modif {
+	background-color: rgb(104, 114, 142);
+	width: 100%;
+	min-height: 80vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
-h2 {
-	color: rgb(22, 50, 82);
-	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-	font-family: 'bebas+neue', sans-serif;
+.select_modif form {
+	display: flex;
+	flex-direction: column;
+	background-color: rgb(60, 88, 111);
+	padding: 40px 60px;
+	border-radius: 10px;
+	box-shadow: 2px 2px 10px 2px white;
+}
+form input {
 	text-align: center;
+	font-size: 1.2rem;
+}
+form textarea {
+	font-size: 1.2rem;
 }
